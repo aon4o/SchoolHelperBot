@@ -77,8 +77,10 @@ module.exports = {
             .then(response => {subjects = response.data})
             .catch(async error => {
                 await handleFetchError(error, interaction);
-                if (error.response.status === 404) {
-                    guildCategory.delete();
+                if (error.response) {
+                    if (error.response.status === 404) {
+                        guildCategory.delete();
+                    }
                 }
                 endFlag = true;
             });
