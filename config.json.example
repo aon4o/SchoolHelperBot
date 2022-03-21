@@ -1,4 +1,5 @@
 {
-  "TOKEN": "hash",
-  "API_URL": "url"
+  "TOKEN": "hash" - Discord Bot Token,
+  "API_URL": "url" - URL to the Discord Router of the API Application,
+  "PORT": "int" - PORT on which the express server will listen for requests
 }
