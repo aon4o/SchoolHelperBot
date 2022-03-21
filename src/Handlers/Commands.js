@@ -43,10 +43,10 @@ module.exports = async (client) => {
 
 //    PERMISSIONS CHECK
     client.on('ready', async () => {
-        const MainGuild = await client.guilds.cache.get('894217567248470057');
+        const Guilds = await client.guilds.cache;
 
-        MainGuild.commands.set(commands)
-            .then(async (command) => {
+        Guilds.map((guild) => {
+            guild.commands.set(commands).then(async (command) => {
                 const Roles = (commandName) => {
                     const commandPermissions = commands.find((command) => command.name === commandName).permission;
 
@@ -54,7 +54,7 @@ module.exports = async (client) => {
                         return null;
                     }
 
-                    return MainGuild.roles.cache.filter((role) => role.permissions.has(commandPermissions));
+                    return guild.roles.cache.filter((role) => role.permissions.has(commandPermissions));
                 }
 
                 const fullPermissions = command.reduce((accumulator, role) => {
@@ -70,7 +70,8 @@ module.exports = async (client) => {
                     return [...accumulator, {id: role.id, permissions}];
                 }, [])
 
-                await MainGuild.commands.permissions.set({ fullPermissions });
-            })
+                await guild.commands.permissions.set({ fullPermissions });
+            });
+        })
     })
 }
