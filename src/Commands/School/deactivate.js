@@ -6,7 +6,7 @@ const handleFetchError = require("../../Utils/handleFetchError");
 
 module.exports = {
     name: 'deactivate',
-    description: 'Deactivates the School Discord Channels!',
+    description: 'Деактивира учебните Канали за Discord.',
 
     /**
      * @param {CommandInteraction} interaction

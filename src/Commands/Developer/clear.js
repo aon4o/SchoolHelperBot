@@ -2,7 +2,7 @@ const { CommandInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: "clear",
-    description: 'Remove messages from the current Channel.',
+    description: 'Изтрива съобщения от текущия Канал.',
     permission: "SEND_MESSAGES",
 
     options: [

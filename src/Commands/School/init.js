@@ -6,7 +6,7 @@ const handleFetchError = require("../../Utils/handleFetchError");
 
 module.exports = {
     name: 'init',
-    description: 'Initialize the School Discord Channels!',
+    description: 'Активира учебните Канали за Discord.',
 
     options: [
         {

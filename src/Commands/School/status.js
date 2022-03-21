@@ -5,7 +5,7 @@ const {API_URL} = require("../../../config.json");
 
 module.exports = {
     name: 'status',
-    description: 'Display the Status of the Client and API Connection!',
+    description: 'Показава Статуса на Бота, Сървъра и Учебните канали.',
 
     /**
      * @param {CommandInteraction} interaction
@@ -17,8 +17,8 @@ module.exports = {
             .setColor("AQUA")
 
         let responseText =
-            `**Bot**: :green_circle: \`НА ЛИНИЯ\` - \`${client.ws.ping}ms\`
-            **Bot Uptime**: <t:${parseInt(client.readyTimestamp / 1000)}:R>\n`;
+            `**Бот**: :green_circle: \`НА ЛИНИЯ\` - \`${client.ws.ping}ms\`
+            **Пуснат от**: <t:${parseInt(client.readyTimestamp / 1000)}:R>\n`;
 
         await axios({
             url: '/status',
