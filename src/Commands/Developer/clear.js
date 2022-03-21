@@ -8,13 +8,13 @@ module.exports = {
     options: [
         {
             name: 'amount',
-            description: "The amount of messages to be deleted.",
+            description: "Броят съобщения, които трябва да бъдат изтрити.",
             type: 'NUMBER',
             required: true
         },
         {
             name: 'target',
-            description: "The target whose messages should be deleted.",
+            description: "Човекът, чиито съобщения трябва да бъдат изтрити.",
             type: 'USER',
             required: false
         }
@@ -47,14 +47,14 @@ module.exports = {
             await channel.bulkDelete(filtered, true)
                 .then(messages => {
                     response
-                        .setDescription(`Cleared ${messages.size} from ${target}.`);
+                        .setDescription(`Изтрити са **${messages.size}** съобщения на ${target}.`);
                     interaction.reply({embeds: [response]});
                 })
         }
         else {
             await channel.bulkDelete(amount, true)
                 .then(messages => {
-                    response.setDescription(`Cleared ${messages.size} from this channel.`);
+                    response.setDescription(`Изтрити са **${messages.size}** съобщения от този канал.`);
                     interaction.reply({embeds: [response]});
                 })
         }

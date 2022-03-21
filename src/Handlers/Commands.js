@@ -3,6 +3,7 @@ const { Client } = require('discord.js');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const Ascii = require('ascii-table');
+const { setCommandsToGuild } = require('../Utils/setCommandsToGuild')
 
 const PG = promisify(glob);
 
@@ -10,9 +11,7 @@ const PG = promisify(glob);
  * @param {Client} client
  */
 module.exports = async (client) => {
-    const table = new Ascii('Command Loader')
-
-    const commands = [];
+    const table = new Ascii('Command Loader');
 
     (await PG(`${process.cwd()}/src/Commands/*/*.js`)).map(async (file) => {
         const command = require(file);
@@ -33,8 +32,7 @@ module.exports = async (client) => {
             }
         }
 
-        client.commands.set(command.name, command);
-        commands.push(command);
+        await client.commands.set(command.name, command);
 
         await table.addRow(command.name, 'Successful');
     });
@@ -46,32 +44,7 @@ module.exports = async (client) => {
         const Guilds = await client.guilds.cache;
 
         Guilds.map((guild) => {
-            guild.commands.set(commands).then(async (command) => {
-                const Roles = (commandName) => {
-                    const commandPermissions = commands.find((command) => command.name === commandName).permission;
-
-                    if(!commandPermissions) {
-                        return null;
-                    }
-
-                    return guild.roles.cache.filter((role) => role.permissions.has(commandPermissions));
-                }
-
-                const fullPermissions = command.reduce((accumulator, role) => {
-                    const roles = Roles(role.name);
-                    if (!roles) {
-                        return accumulator;
-                    }
-
-                    const permissions = roles.reduce((a, role) => {
-                        return [...a, {id: role.id, type: 'ROLE', permission: true}];
-                    }, []);
-
-                    return [...accumulator, {id: role.id, permissions}];
-                }, [])
-
-                await guild.commands.permissions.set({ fullPermissions });
-            });
+            setCommandsToGuild(client, guild);
         })
     })
 }
