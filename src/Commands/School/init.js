@@ -1,8 +1,8 @@
 const { Client, CommandInteraction, MessageEmbed, Permissions} = require('discord.js');
 require('../../Events/Client/ready');
 const axios = require("axios");
-const {API_URL} = require("../../../config.json");
-const handleFetchError = require("../../Utils/handleFetchError");
+const { API_URL, CATEGORY_CHANNEL_NAME } = require("../../../config.json");
+const handleFetchError = require("../../Utils/createFetchErrorEmbed");
 
 module.exports = {
     name: 'init',
@@ -26,7 +26,6 @@ module.exports = {
         const { options } = interaction;
         const key = options.getString('key');
 
-        const guildCategoryName = 'school channels';
         let subjects = {};
         let guildCategory = false;
 
@@ -37,7 +36,7 @@ module.exports = {
         await interaction.guild.channels.fetch()
             .then(channels => {
                 channels.map((channel) => {
-                    if (channel.name === guildCategoryName) {
+                    if (channel.name === CATEGORY_CHANNEL_NAME) {
                         if (channel.type === 'GUILD_CATEGORY') {
                             guildCategory = channel;
                         }
@@ -48,7 +47,7 @@ module.exports = {
 
         // CREATING THE GUILD CATEGORY FOR SCHOOL CHANNELS IF IT DOES NOT EXIST
         if (!guildCategory) {
-            await interaction.guild.channels.create(guildCategoryName, {type: "GUILD_CATEGORY"})
+            await interaction.guild.channels.create(CATEGORY_CHANNEL_NAME, {type: "GUILD_CATEGORY"})
                 .then(response => {
                     guildCategory = response;
                 })

@@ -2,7 +2,7 @@ const { Client, CommandInteraction, MessageEmbed} = require('discord.js');
 require('../../Events/Client/ready');
 const axios = require("axios");
 const {API_URL} = require("../../../config.json");
-const handleFetchError = require("../../Utils/handleFetchError");
+const createFetchErrorEmbed = require("../../Utils/createFetchErrorEmbed");
 
 module.exports = {
     name: 'deactivate',
@@ -18,6 +18,7 @@ module.exports = {
         let guildCategory = false;
 
         const channelsEmbed = new MessageEmbed();
+        let errorEmbed = undefined;
         const endEmbed = new MessageEmbed();
 
         let endFlag = false;
@@ -32,7 +33,8 @@ module.exports = {
         })
             .then()
             .catch(async error => {
-                await handleFetchError(error, interaction);
+                errorEmbed = await createFetchErrorEmbed(error);
+                await interaction.reply({embeds: [errorEmbed]});
                 endFlag = true;
             });
 
