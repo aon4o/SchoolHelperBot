@@ -29,7 +29,7 @@ module.exports = {
         let subjects = {};
         let guildCategory = false;
 
-        const responseEmbed = new MessageEmbed();
+        let responseEmbed = new MessageEmbed();
         let endFlag = false;
 
         // CHECKING IF GUILD CATEGORY ALREADY EXISTS
@@ -75,12 +75,13 @@ module.exports = {
         })
             .then(response => {subjects = response.data})
             .catch(async error => {
-                await handleFetchError(error, interaction);
+                responseEmbed = await handleFetchError(error, interaction);
                 if (error.response) {
                     if (error.response.status === 404) {
                         guildCategory.delete();
                     }
                 }
+                await interaction.reply({embeds: [responseEmbed]});
                 endFlag = true;
             });
 

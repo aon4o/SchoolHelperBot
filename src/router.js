@@ -14,6 +14,11 @@ module.exports = async (server, client) => {
         console.log('hello world', client.user.username);
     })
 
+    // STATUS
+    server.get('/status', (request, response) => {
+        response.status(200).end();
+    })
+
     // MESSAGE CREATE
     server.post('/messages/create', async (request, response) => {
         const guild = client.guilds.cache.get(request.body.guild_id);
@@ -45,9 +50,9 @@ module.exports = async (server, client) => {
 
             await channel.send({embeds: [embed]});
             response.status(200).end();
+        } else {
+            await response.status(404).send(`Този сървър няма Канал за предмет '${request.body.subject}'!`);
         }
-
-        await response.status(404).send(`Този сървър няма Канал за предмет '${request.body.subject}'!`);
     });
 
     // SUBJECT CREATE
