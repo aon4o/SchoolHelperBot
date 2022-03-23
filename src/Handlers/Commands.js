@@ -3,7 +3,6 @@ const { Client } = require('discord.js');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const Ascii = require('ascii-table');
-const { setCommandsToGuild } = require('../Utils/setCommandsToGuild')
 
 const PG = promisify(glob);
 
@@ -38,13 +37,4 @@ module.exports = async (client) => {
     });
 
     console.log(table.toString());
-
-//    PERMISSIONS CHECK
-    client.on('ready', async () => {
-        const Guilds = await client.guilds.cache;
-
-        Guilds.map((guild) => {
-            setCommandsToGuild(client, guild);
-        })
-    })
 }

@@ -89,10 +89,8 @@ module.exports = {
 
 
         for (let subject of subjects) {
-            console.log(subject)
             let flag = false;
             for (let channel of guildCategory.children) {
-                console.log(channel)
                 if (channel.name === subject.name) {
                     flag = true;
                     break;

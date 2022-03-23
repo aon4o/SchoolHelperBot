@@ -1,4 +1,5 @@
 const { Client } = require('discord.js');
+const {setCommandsToGuild} = require("../../Utils/setCommandsToGuild");
 
 module.exports = {
     name: 'ready',
@@ -6,8 +7,14 @@ module.exports = {
     /**
      * @param {Client} client
      */
-    execute(client) {
+    async execute(client) {
+        const Guilds = await client.guilds.cache;
+
+        Guilds.map(async (guild) => {
+            await setCommandsToGuild(client, guild);
+        })
+        await client.user.setActivity(", Hello!", {type: 'WATCHING'});
+
         console.log('The Client is now Ready!');
-        client.user.setActivity(", Hello!", {type: 'WATCHING'});
     }
 }

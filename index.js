@@ -10,8 +10,10 @@ client.commands = new Collection();
 require('./src/Handlers/Events')(client);
 require('./src/Handlers/Commands')(client);
 
-client.login(TOKEN);
-require('./src/router')(server, client);
+client.login(TOKEN)
+    .then(() => console.log('The Client Logged in successfully.'))
+    .catch(error => console.log(error));
+require('./server')(server, client);
 server.listen(PORT, () => {
     console.log(`Express Server started successfully on port: ${PORT}.`);
 });

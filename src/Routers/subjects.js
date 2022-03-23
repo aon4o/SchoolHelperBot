@@ -1,63 +1,13 @@
-const {MessageEmbed, Permissions} = require("discord.js");
-const bodyParser = require('body-parser');
-const Ascii = require('ascii-table');
-const { CATEGORY_CHANNEL_NAME } = require('../config.json')
+const router = require('express').Router();
+const bodyParser = require("express");
+const {CATEGORY_CHANNEL_NAME} = require("../../config.json");
+const {Permissions} = require("discord.js");
 
-module.exports = async (server, client) => {
-    const table = new Ascii('Express Sever');
+router.use(bodyParser.json());
 
-    server.use(bodyParser.json());
-
-    // INDEX
-    server.get('/', (request, response) => {
-        response.send(`Hello, I'm ${client.user.username}.`);
-        console.log('hello world', client.user.username);
-    })
-
-    // STATUS
-    server.get('/status', (request, response) => {
-        response.status(200).end();
-    })
-
-    // MESSAGE CREATE
-    server.post('/messages/create', async (request, response) => {
-        const guild = client.guilds.cache.get(request.body.guild_id);
-        let channel = undefined;
-
-        // CHECKING IF THE SERVER EXISTS
-        if (!guild) {
-            await response.status(404).send(`Сървър с id '${request.body.guild_id}' не съществува!`);
-        }
-
-        // GETTING THE CHANNEL FOR THE SUBJECT
-        await guild.channels.fetch()
-            .then(channels => {
-                channels.map((ch) => {
-                    if (ch.name === request.body.subject.toLowerCase() && ch.isText()) {
-                        channel = ch;
-                    }
-                })
-            })
-
-        // CHECKING IF THE CHANNEL EXISTS AND SENDING THE MESSAGE
-        if (channel) {
-            const embed = new MessageEmbed()
-                .setColor("GOLD")
-                .setTitle(request.body.title)
-                .setDescription(request.body.text)
-                .setAuthor({name: request.body.user})
-                .setFooter({text: ''});
-
-            await channel.send({embeds: [embed]});
-            response.status(200).end();
-        } else {
-            await response.status(404).send(`Този сървър няма Канал за предмет '${request.body.subject}'!`);
-        }
-    });
-
-    // SUBJECT CREATE
-    server.post('/subjects', async (request, response) => {
-        const guild = client.guilds.cache.get(request.body.guild_id);
+router.route('/subjects')
+    .post(async (request, response) => {
+        const guild = request.client.guilds.cache.get(request.body.guild_id);
         const subject_name = request.body.subject;
         let categoryChannel = undefined;
         let endFlag = false;
@@ -119,12 +69,9 @@ module.exports = async (server, client) => {
         })
 
         await response.status(200).end();
-    });
-
-
-    // SUBJECT DELETE
-    server.delete('/subjects', async (request, response) => {
-        const guild = client.guilds.cache.get(request.body.guild_id);
+    })
+    .delete(async (request, response) => {
+        const guild = request.client.guilds.cache.get(request.body.guild_id);
         const subject_name = request.body.subject;
         let channelToDelete = undefined;
 
@@ -147,8 +94,7 @@ module.exports = async (server, client) => {
                         ch.name === subject_name.toLowerCase() &&
                         ch.type === "GUILD_TEXT" && ch.parent &&
                         ch.parent.name === CATEGORY_CHANNEL_NAME
-                    )
-                    {
+                    ) {
                         channelToDelete = ch;
                     }
                 })
@@ -164,6 +110,4 @@ module.exports = async (server, client) => {
         await response.status(200).end();
     });
 
-    await table.addRow('Started Successfully');
-    console.log(table.toString());
-}
+module.exports = router;
