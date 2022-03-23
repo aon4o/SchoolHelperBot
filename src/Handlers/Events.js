@@ -13,8 +13,11 @@ module.exports = async (client) => {
 
         if (!Events.includes(event.name) || !event.name) {
             const L = file.split('/');
-            await table.addRow(`${event.name || 'MISSING'}`, `Event name is either invalid or missing: ${L[6]}/${L[7]}`);
-            return;
+            return table.addRow(
+                `${event.name || 'MISSING'}`,
+                '❌ Failed!',
+                `Event name is either invalid or missing: ${L[6]}/${L[7]}`
+            );
         }
 
         if(event.once) {
@@ -23,7 +26,7 @@ module.exports = async (client) => {
             client.on(event.name, (...args) => event.execute(...args, client));
         }
 
-        await table.addRow(event.name, 'Successful');
+        await table.addRow(event.name, '✅ Success');
     });
 
     console.log(table.toString());

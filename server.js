@@ -21,11 +21,30 @@ module.exports = async (server, client) => {
     })
 
     // SETTING THE ROUTERS
-    server.use(status);
-    server.use(messages);
-    server.use(subjects);
-    server.use(classes);
+    try {
+        await server.use(status);
+        await table.addRow('"Status" Router', '✅ Success');
+    } catch (error) {
+        await table.addRow('"Status" Router', '❌ Failed!');
+    }
+    try {
+        await server.use(messages);
+        await table.addRow('"Messages" Router', '✅ Success');
+    } catch (error) {
+        await table.addRow('"Messages" Router', '❌ Failed!');
+    }
+    try {
+        await server.use(subjects);
+        await table.addRow('"Subjects" Router', '✅ Success');
+    } catch (error) {
+        await table.addRow('"Subjects" Router', '❌ Failed!');
+    }
+    try {
+        await server.use(classes);
+        await table.addRow('"Classes" Router', '✅ Success');
+    } catch (error) {
+        await table.addRow('"Classes" Router', '❌ Failed!');
+    }
 
-    await table.addRow('Started Successfully');
     console.log(table.toString());
 }

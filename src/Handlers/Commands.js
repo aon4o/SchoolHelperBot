@@ -12,28 +12,28 @@ const PG = promisify(glob);
 module.exports = async (client) => {
     const table = new Ascii('Command Loader');
 
-    (await PG(`${process.cwd()}/src/Commands/*/*.js`)).map(async (file) => {
+    await (await PG(`${process.cwd()}/src/Commands/*/*.js`)).map(async (file) => {
         const command = require(file);
 
         if(!command.name) {
-            return table.addRow(file.split('/')[7], 'Failed!', 'Missing Name');
+            return table.addRow(file.split('/')[7], '❌ Failed!', 'Missing Name');
         }
 
         if(!command.description) {
-            return table.addRow(command.name, 'Failed!', 'Missing Name');
+            return table.addRow(command.name, '❌ Failed!', 'Missing Name');
         }
 
         if(command.permission) {
             if(Permissions.includes(command.permission)) {
                 command.defaultPermission = false;
             } else {
-                return table.addRow(command.name, 'Failed!', 'Permission Invalid');
+                await table.addRow(command.name, '❌ Failed!', 'Permission Invalid');
+                return;
             }
         }
 
         await client.commands.set(command.name, command);
-
-        await table.addRow(command.name, 'Successful');
+        await table.addRow(command.name, '✅ Success');
     });
 
     console.log(table.toString());
