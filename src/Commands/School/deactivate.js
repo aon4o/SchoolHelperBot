@@ -1,7 +1,7 @@
 const { Client, CommandInteraction, MessageEmbed} = require('discord.js');
 require('../../Events/Client/ready');
 const axios = require("axios");
-const {API_URL} = require("../../../config.json");
+const {API_URL, CATEGORY_CHANNEL_NAME} = require("../../../config.json");
 const createFetchErrorEmbed = require("../../Utils/createFetchErrorEmbed");
 
 module.exports = {
@@ -14,7 +14,6 @@ module.exports = {
      */
     async execute(interaction, client) {
 
-        const guildCategoryName = 'school channels';
         let guildCategory = false;
 
         const channelsEmbed = new MessageEmbed();
@@ -40,11 +39,11 @@ module.exports = {
 
         if (endFlag) return;
 
-        // CHECKING IF GUILD CATEGORY ROR SCHOOL EXISTS
+        // CHECKING IF GUILD CATEGORY FOR SCHOOL EXISTS
         await interaction.guild.channels.fetch()
             .then(channels => {
                 channels.map((channel) => {
-                    if (channel.name === guildCategoryName) {
+                    if (channel.name === CATEGORY_CHANNEL_NAME) {
                         if (channel.type === 'GUILD_CATEGORY') {
                             guildCategory = channel;
                         }

@@ -34,7 +34,7 @@ module.exports = {
             .catch(async error => {
                 if (error.response) {
                     responseText += `**Сървър**: :green_circle: \`НА ЛИНИЯ\`\n`;
-                    responseText += `**Учебни Канали**: :red_circle: ${error.response.data.detail}\n`;
+                    responseText += `**Учебни Канали**: :red_circle: \`НЕАКТИВНИ\`\n`;
                 } else if (error.request) {
                     responseText += `**Сървър**: :red_circle: \`ИЗВЪН ЛИНИЯ\`\n`;
                     responseText += `**Учебни Канали**: :yellow_circle: \`НЕДОСТЪПНО\`\n`;

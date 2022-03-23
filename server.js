@@ -3,6 +3,7 @@ const Ascii = require('ascii-table');
 const status = require('./src/Routers/status');
 const messages = require('./src/Routers/messages');
 const subjects = require('./src/Routers/subjects');
+const classes = require('./src/Routers/classes');
 
 module.exports = async (server, client) => {
     const table = new Ascii('Express Sever');
@@ -23,6 +24,7 @@ module.exports = async (server, client) => {
     server.use(status);
     server.use(messages);
     server.use(subjects);
+    server.use(classes);
 
     await table.addRow('Started Successfully');
     console.log(table.toString());

@@ -10,7 +10,7 @@ const createFetchErrorEmbed = async (error) => {
 
     if (error.response) {
         errorEmbed
-            .setDescription(error.response.data.detail);
+            .setDescription(error.response.data.toString());
     } else if (error.request) {
         errorEmbed
             .setDescription('Възникна грешка при извличането на информация от Сървъра.');
