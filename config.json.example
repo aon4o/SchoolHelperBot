@@ -1,5 +1,6 @@
 {
   "TOKEN": "hash" - Discord Bot Token,
   "API_URL": "url" - URL to the Discord Router of the API Application,
-  "PORT": "int" - PORT on which the express server will listen for requests
+  "PORT": "int" - PORT on which the express server will listen for requests,
+  "CATEGORY_CHANNEL_NAME": "str" - Name of the category for the school channels
 }

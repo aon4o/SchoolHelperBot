@@ -3,7 +3,7 @@ const express = require('express')
 const { TOKEN, PORT } = require('./config.json');
 
 const client = new Client({intents: 32767});
-const server = express()
+const server = express();
 
 client.commands = new Collection();
 
